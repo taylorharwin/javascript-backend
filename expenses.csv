@@ -1,0 +1,9 @@
+id,name,amount,date,status
+1,Walmart,185.65,2021-03-01,work
+2,Google,100.62,2021-03-12,work
+3,CarMax,330.05,2021-03-14,unknown
+4,Godaddy,55.80,2021-03-14,work
+5,Amazon,75.46,2021-03-14,personal
+6,Starbucks,8.98,2021-03-18,unknown
+7,Amazon,120.51,2021-03-18,unknown
+8,Masterclass,98.81,2021-03-20,unknown
