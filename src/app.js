@@ -1,10 +1,17 @@
 const _ = require("lodash");
 const express = require("express");
 const cors = require("cors");
-const { Example } = require("./models");
+const { Expense } = require("./models");
 
 const app = express();
 app.use(cors());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(express.json());
 
 app.get("/", async (req, res) => {
   res.json({
@@ -12,19 +19,47 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.get("/examples", async (req, res) => {
-  const examples = await Example.findAll({
-    order: [["id", "asc"]],
+app.get("/expenses", async (req, res) => {
+  const expenses = await Expense.findAll({
+    order: [["createdAt", "desc"]],
+    limit: 100,
   });
 
-  const mappedExamples = examples.map((example) =>
-    _.pick(example, ["id", "name", "email", "createdAt", "updatedAt"])
+  const mappedExpenses = expenses.map((expense) =>
+    _.pick(expense, [
+      "id",
+      "name",
+      "amount",
+      "status",
+      "createdAt",
+      "updatedAt",
+    ])
   );
 
   res.json({
     status: "success",
-    examples: mappedExamples,
+    expenses: mappedExpenses,
   });
+});
+
+app.post("/expenses/track", async (req, res) => {
+  const { id, status } = req.body;
+
+  try {
+    const expense = await Expense.findOne({ where: { id } });
+    expense.status = status;
+    await expense.save();
+
+    res.json({
+      status: "success",
+      expense: expense,
+    });
+  } catch (err) {
+    res.json({
+      status: "error",
+      expenses: err,
+    });
+  }
 });
 
 const port = 8080;
