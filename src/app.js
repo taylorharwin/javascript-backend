@@ -30,6 +30,7 @@ app.get("/expenses", async (req, res) => {
       "id",
       "name",
       "amount",
+      "date",
       "status",
       "createdAt",
       "updatedAt",
